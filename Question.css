@@ -1,0 +1,17 @@
+
+
+.nav_bar{
+	margin-bottom: 0px;
+    border-radius: 0px;
+    border: none;
+}
+.side_bar{
+	width: 146px;
+    height: 2000px;
+    background-color: #222;
+    position: absolute;
+}
+.content{
+	margin-left: 180px;
+	margin-top: 50px;
+}
