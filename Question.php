@@ -28,10 +28,12 @@
     </ul>
   </div>
 </nav>
-<div class="side_bar"></div>  
+<div class="side_bar">
+	<p style="color:white; font-size: 25px;">Exam</p>
+</div>  
 <div class="content contain container">
-<div id="fun">hey</div>
-
+<div><h1>You need to answer all these question : </h1></div>
+<br><br>
   <?php
   	session_start();
   	$_SESSION['num_of_radio'] =0;
@@ -48,9 +50,6 @@
 	if ($conn->connect_error) {
 	    die("Connection failed: " . $conn->connect_error);
 	} 
-	echo "Connected successfully";
-	
-	echo "<br><br>";
 	
 	$sql = "SELECT * FROM question";
 	$result = $conn -> query($sql);
@@ -91,21 +90,16 @@
 	} else {
 	    echo "0 results";
 	}
-	echo $num_of_radio_question;
-	echo "<br>";
-	print_r($radio_question_id);
 	$_SESSION['radio_question_id'] = implode(',', $radio_question_id);
 	$_SESSION['written_question_id'] = implode(",", $written_question_id);
-	echo "<br>";
-	print_r($written_question_id);
-	echo "<br>";
-	echo $num_of_written_question;
 	echo "<br><br>";
 	echo"<input type='submit' onclick='return check_question_validation($num_of_radio_question,$num_of_written_question)' class='btn btn-primary' name='submit_answers'><br><br><br>";
 	echo "</form>";
 	
 	if(isset($_POST['submit_answers'])){
+		//validation for answers
 		check_answers();
+		//insert data to database
 		get_result();
 	}
 	function check_answers(){
@@ -142,20 +136,15 @@
 		$sql1="SELECT answer_id FROM answer";
 		$rowcount =0;
 		if ($result=mysqli_query($conn,$sql1)){
-				// Return the number of rows in result set
 				 $rowcount=mysqli_num_rows($result);
-				 //echo $rowcount;
-				 // Free result set
 				 mysqli_free_result($result);
 		}
-		//echo "<br><br> This is the rowcount".$rowcount."<br>";
 		$count_radio_id=0;
 		$count_written_id=0;
 		$correct_answer_array = array();
 		$wrong_answer_array = array();
 		$degree = 0;
 		for ($i=$rowcount+1; $i < $rowcount+$_SESSION['num_of_radio'] ; $i++) { 
-			//echo "<br><THis is i".$i."<br>";
 			$degree = $i."";
 			$input_answer = $_POST[$degree.""];
 			$answer_id = $i;
@@ -164,21 +153,15 @@
 			$written_question_id = explode(",", $_SESSION['written_question_id']);
 			$answer = "";
 			$conn = new mysqli("localhost", "root", "", "db_exam");
-			// Check connection
 			if ($conn->connect_error) {
 			    die("Connection failed: " . $conn->connect_error);
 			} 
 			$sql = "SELECT question_id,question_answer FROM question WHERE question_id=$radio_question_id[$count_radio_id]";
 			$count_radio_id++;
 			$result = $conn->query($sql);
-			/*echo "<br> <br> This is the a session : <br>".$_SESSION['radio_question_id']."<br>";*/
 			if ($result->num_rows > 0) {
-			    // output data of each row
 			    $row = $result->fetch_assoc();
-			        //echo "question_id: " . $row["question_id"]. " - question_answer: " . $row["question_answer"]. "<br>";
 			    $correct_answer = $row["question_answer"];
-			    /*echo "<br>This is Correct :".$correct_answer;
-			    echo "<br> This is input :".$input_answer."<br>";*/
 			    $correct_answer = strtolower($correct_answer);
 			    $correct_answer = str_replace('.','',$correct_answer);
 			    $input_answer = strtolower($input_answer);
@@ -194,8 +177,6 @@
 			    	array_push($wrong_answer_array, $i);
 			    }
 
-			} else {
-			    /*echo "0 results";*/
 			}
 			$degree++;
 			$conn->close();
@@ -208,20 +189,15 @@
 			$answer_id = $i;
 			$user_id=2;
 			$conn = new mysqli("localhost", "root", "", "db_exam");
-			// Check connection
 			if ($conn->connect_error) {
 			    die("Connection failed: " . $conn->connect_error);
 			} 
 			$sql = "SELECT question_id,question_answer FROM question WHERE question_id=$written_question_id[$count_written_id]";
 			$count_written_id++;
 			$result = $conn->query($sql);
-			/*echo "<br> <br> This is the a session : <br>".$_SESSION['radio_question_id']."<br>";*/
 			if ($result->num_rows > 0) {
-			    // output data of each row
 			    $row = $result->fetch_assoc();
-			        //echo "question_id: " . $row["question_id"]. " - question_answer: " . $row["question_answer"]. "<br>";
 			    $correct_answer = $row["question_answer"];
-			    
 			    $correct_answer = strtolower($correct_answer);
 			    $correct_answer = str_replace('.','',$correct_answer);
 			    $input_answer = strtolower($input_answer);
@@ -236,11 +212,7 @@
 			    	$sql = "INSERT INTO answer (answer_id, user_id,question_id,answer_answer,answer_check) VALUES ($answer_id,2,'".$written_question_id[$count_written_id]."',$correct_answer ,0)";
 			    	array_push($wrong_answer_array, $i);
 			    }
-
-			} else {
-			    /*echo "0 results";*/
-			}
-
+			} 
 			$degree++;
 			$conn->close();
 		 }
@@ -252,10 +224,8 @@
 		echo "<script type='text/javascript'>alert('$message');</script>";
 		$conn->close();
 	}
-	
 	?>
 	<br><br>
 </div>
-
 </body>
 </html>

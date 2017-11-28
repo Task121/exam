@@ -34,6 +34,9 @@
     </ul>
   </div>
 </nav>
+<div class="side_bar">
+	<p style="color:white; font-size: 25px;">Exam</p>
+</div>  
 <div class="side_bar"></div>  
 <div class="content contain container">
 	<?php
@@ -47,15 +50,15 @@
 	<form action="" method="POST">
 		<h2>Radio Button Question</h2><br><br>
 		Question text: <input type="text" class=" input_question form-control" id="focusedInput" name="radio_question"><br>
-		Question Choice 1: <input type="text" class="input_choice form-control" id="focusedInput" name="choice_1">
-		Question Choice 2: <input type="text" class=" input_choice form-control" id="focusedInput" name="choice_2">
-		Question Choice 3: <input type="text" class="input_choice form-control" id="focusedInput" name="choice_3">
-		Question Choice 4: <input type="text" class=" input_choice form-control" id="focusedInput" name="choice_4"><br>
+		Question Choice 1: <input type="text" class="input_number form-control" id="focusedInput" name="choice_1">
+		Question Choice 2: <input type="text" class=" input_number form-control" id="focusedInput" name="choice_2">
+		Question Choice 3: <input type="text" class="input_number form-control" id="focusedInput" name="choice_3">
+		Question Choice 4: <input type="text" class=" input_number form-control" id="focusedInput" name="choice_4"><br>
 		Question Answer: <input type="text" class="input_question form-control" id="focusedInput" name="answer"><div id="check_answer" class="check_answer">This fields must be like just one of the Choicse option</div><br>
 		<h2>Written Question</h2><br><br>
 		Enter the written question: <input type="text" class=" input_question form-control" id="focusedInput" name="question_text"><br>
 		Enter the answer: <input type="text" class=" input_question form-control" id="focusedInput" name="question_text_answer"><br>
-		<input type="submit" class="btn btn-primary" name="submit_question"><br><br><br>
+		<input type="submit" class="input_submit btn btn-primary" name="submit_question"><br><br><br>
 	</form>
 	<?php
 		$db = "db_exam";
@@ -92,10 +95,8 @@
 						$sql1="SELECT question_id FROM question";
 						$rowcount =0;
 						if ($result=mysqli_query($link,$sql1)){
-			  				// Return the number of rows in result set
 			 				 $rowcount=mysqli_num_rows($result);
 			 				 echo $rowcount;
-			 				 // Free result set
 			 				 mysqli_free_result($result);
 			 			}
 			 			if($rowcount !=0){
